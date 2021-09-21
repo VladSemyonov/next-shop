@@ -1,12 +1,26 @@
-import React, { useEffect, useState, useContext } from "react";
-import { Link } from "react-router-dom";
-import { AppContext } from "../App.js";
+import { useEffect, useState, useContext } from "react";
+import { AppContext } from "../../../pages/_app";
+import Link from "next/link"
 
 const TopNavigation = () => {
   const [categories, setCategories] = useState([]);
   const [showMenu, setShowMenu] = useState("none")
   const [searchValue, setSearchValue] = useState('')
   const { summaryPrice, bascket, deleteFromBascket } = useContext(AppContext);
+  const [navbarTop, setNavbarTop] = useState(0);
+
+  useEffect(() => {
+    let prevScrollpos = window.pageYOffset;
+    window.onscroll = () => {
+      const currentScrollPos = window.pageYOffset;
+      if (prevScrollpos < currentScrollPos && currentScrollPos > 90) {
+        setNavbarTop(-130);
+      } else {
+        setNavbarTop(0);
+      }
+      prevScrollpos = currentScrollPos;
+    };
+  }, []);
 
   useEffect(
     () =>
@@ -22,14 +36,135 @@ const TopNavigation = () => {
 
   return (
     <>
-      <div className="site-header d-none d-lg-block">
+      <div className="site-header d-none d-lg-block pt--90">
+      <div className="header-bottom pb--10 fixed-top bg-light border-top border-success" style={{
+          transition: "all .25s ease-in-out",
+          top: `${navbarTop}px`,
+        }}
+        id="nav-bar">
+          <div className="container">
+            <div className="row align-items-center">
+            <div className="col-lg-3 d-flex justify-content-center">
+                <Link href="/" className="my-logo">
+                  Teemo
+                </Link>
+              </div>
+              <div className="col-lg-5">
+                <div className="header-search-block">
+                  <input type="text" placeholder="Искать в магазине" onInput={(event)=>setSearchValue(event.target.value)}/>
+                  <Link href={{
+                    pathname: "/search/[value]",
+                    query: {value: searchValue}
+                  }}>Искать</Link>
+                </div>
+              </div>
+              <div className="col-lg-4">
+                <div className="main-navigation flex-lg-right">
+                  <div className="cart-widget">
+                    <div className="login-block">
+                      <Link href="/login" className="font-weight-bold">
+                        Авторизация
+                      </Link>{" "}
+                      <br />
+                    </div>
+                    <div className="cart-block">
+                      <div className="cart-total">
+                        {bascket.length > 0 && (
+                          <span className="text-number">{bascket.length}</span>
+                        )}
+                        <span className="text-item">Корзина</span>
+                        <span className="price">
+                          {summaryPrice} грн
+                          <i className="fas fa-chevron-down" />
+                        </span>
+                      </div>
+                      <div className="cart-dropdown-block">
+                        {bascket.length > 0 ? (
+                          bascket.map((i, index) => {
+                            return (
+                              <div key={index} className=" single-cart-block ">
+                                <div className="cart-product">
+                                  <Link
+                                  href={{
+                                    pathname: "/product/[id]",
+                                    query: {id: i._attributes.id}
+                                  }}
+                                    className="image"
+                                  >
+                                    <img src={i.picture._text} alt="" />
+                                  </Link>
+                                  <div className="content">
+                                    <h3 className="title">
+                                      <a to={`/product/${i._attributes.id}`}>
+                                        {i.name._text}
+                                      </a>
+                                    </h3>
+                                    <p className="price">
+                                      {i.amountBuy} × {i.price._text} грн
+                                    </p>
+                                    <button
+                                      className="cross-btn"
+                                      onClick={() =>
+                                        deleteFromBascket(i._attributes.id)
+                                      }
+                                    >
+                                      <i className="fas fa-times" />
+                                    </button>
+                                  </div>
+                                </div>
+                                <div className=" single-cart-block ">
+                                  <div className="col">
+                                    <a
+                                      to="/bascket"
+                                      className="btn btn-outline-success d-flex justify-content-around"
+                                    >
+                                    <span>
+                                    Перейти в корзину</span>
+                                      <i className="fas fa-chevron-right" />
+                                    </a>
+                                   </div>
+                                </div>
+                              </div>
+                            );
+                          })
+                          
+                        ) : (<div className="d-flex justify-content-center">
+                            <h3>Корзина пуста</h3>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
         <div className="header-middle pt--10 pb--10">
           <div className="container">
             <div className="row align-items-center">
-              <div className="col-lg-3 ">
-                <Link to="/" className="my-logo">
-                  Teemo
-                </Link>
+            <div className="col-lg-3">
+                <nav className="category-nav   ">
+                  <div>
+                    <a className="category-trigger" onClick={setMenu}>
+                      <i className="fa fa-bars" />
+                      Выбрать категории
+                    </a>
+                    <ul style={{display: showMenu, position: "absolute", width: "100%", background: "white", border: "1px solid lightgrey"}}>
+                      {categories.map((i) => (
+                        <li onClick={()=>setShowMenu("none")} key={i._attributes.id}
+                        style={{height: "35px", color: "black", fontSize: "20px", padding: "0 2rem"}}>
+                          <Link href={{
+                            pathname: "/category/[id]",
+                            query: {id: i._attributes.id}
+                          }}>
+                            {i._text}
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </nav>
               </div>
               <div className="col-lg-3">
                 <div className="header-phone ">
@@ -277,7 +412,7 @@ const TopNavigation = () => {
                       </ul>
                     </li>
                     <li className="menu-item">
-                      <Link to="/contacts">Контакты</Link>
+                      <a to="/contacts">Контакты</a>
                     </li>
                   </ul>
                 </div>
@@ -285,111 +420,7 @@ const TopNavigation = () => {
             </div>
           </div>
         </div>
-        <div className="header-bottom pb--10">
-          <div className="container">
-            <div className="row align-items-center">
-              <div className="col-lg-3">
-                <nav className="category-nav   ">
-                  <div>
-                    <a className="category-trigger" onClick={setMenu}>
-                      <i className="fa fa-bars" />
-                      Выбрать категории
-                    </a>
-                    <ul style={{display: showMenu, position: "absolute", width: "100%", background: "white", border: "1px solid lightgrey"}}>
-                      {categories.map((i) => (
-                        <li onClick={()=>setShowMenu("none")} key={i._attributes.id}
-                        style={{height: "35px", color: "black", fontSize: "20px", padding: "0 2rem"}}>
-                          <Link to={`/category/${i._attributes.id}`}>
-                            {i._text}
-                          </Link>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </nav>
-              </div>
-              <div className="col-lg-5">
-                <div className="header-search-block">
-                  <input type="text" placeholder="Искать в магазине" onInput={(event)=>setSearchValue(event.target.value)}/>
-                  <Link to={`/search/${searchValue}`}>Искать</Link>
-                </div>
-              </div>
-              <div className="col-lg-4">
-                <div className="main-navigation flex-lg-right">
-                  <div className="cart-widget">
-                    <div className="login-block">
-                      <Link to="/login" className="font-weight-bold">
-                        Авторизация
-                      </Link>{" "}
-                      <br />
-                    </div>
-                    <div className="cart-block">
-                      <div className="cart-total">
-                        {bascket.length > 0 && (
-                          <span className="text-number">{bascket.length}</span>
-                        )}
-                        <span className="text-item">Корзина</span>
-                        <span className="price">
-                          {summaryPrice} грн
-                          <i className="fas fa-chevron-down" />
-                        </span>
-                      </div>
-                      <div className="cart-dropdown-block">
-                        {bascket.length > 0 ? (
-                          bascket.map((i, index) => {
-                            return (
-                              <div key={index} className=" single-cart-block ">
-                                <div className="cart-product">
-                                  <Link
-                                    to={`/product/${i._attributes.id}`}
-                                    className="image"
-                                  >
-                                    <img src={i.picture._text} alt="" />
-                                  </Link>
-                                  <div className="content">
-                                    <h3 className="title">
-                                      <Link to={`/product/${i._attributes.id}`}>
-                                        {i.name._text}
-                                      </Link>
-                                    </h3>
-                                    <p className="price">
-                                      {i.amountBuy} × {i.price._text} грн
-                                    </p>
-                                    <button
-                                      className="cross-btn"
-                                      onClick={() =>
-                                        deleteFromBascket(i._attributes.id)
-                                      }
-                                    >
-                                      <i className="fas fa-times" />
-                                    </button>
-                                  </div>
-                                </div>
-                              </div>
-                            );
-                          })
-                        ) : (
-                          <h3>Корзина пуста</h3>
-                        )}
-                        <div className=" single-cart-block ">
-                          <div className="col">
-                            <Link
-                              to="/bascket"
-                              className="btn btn-outline-info"
-                            >
-                              Перейти в корзину{" "}
-                              <i className="fas fa-chevron-right" />
-                            </Link>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        
       </div>
       <div className="site-mobile-menu">
         <header className="mobile-header d-block d-lg-none pt--10 pb-md--10">
@@ -410,9 +441,9 @@ const TopNavigation = () => {
                     <ul className="category-menu">
                       {categories.map((i) => (
                         <li className={"cat-item"} key={i._attributes.id}>
-                          <Link to={`/category/${i._attributes.id}`}>
+                          <a to={`/category/${i._attributes.id}`}>
                             {i._text}
-                          </Link>
+                          </a>
                         </li>
                       ))}
                     </ul>
