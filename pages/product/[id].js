@@ -2,6 +2,7 @@ import { useEffect, useState, useContext } from "react";
 import { useRouter } from "next/dist/client/router";
 import { AppContext } from "../_app";
 import Layout from "../../src/components/Layout/Layout";
+import Image from "next/image";
 
 export default function Product({ product }) {
   const router = useRouter();
@@ -29,7 +30,12 @@ export default function Product({ product }) {
       <div className={"container"}>
         <div className="row  mb--60" style={{ maxWidth: "100%" }}>
           <div className="col-lg-5 mb--30">
-            <img src={product.picture._text} alt={product.name._text} />
+            <Image
+              width="300"
+              height="500"
+              src={product.picture._text}
+              alt={product.name._text}
+            />
             <div className="add-cart-btn mt--40 d-flex justify-content-center">
               <button
                 className="btn font-bold"

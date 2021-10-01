@@ -59,6 +59,7 @@ export default function ProductCard({ item, size }) {
                   pathname: "/product/[id]",
                   query: { id: item._attributes.id },
                 }}
+                passHref
               >
                 <Image
                   width={250}
