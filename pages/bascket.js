@@ -128,6 +128,7 @@ export default function Bascket() {
                               pathname: "/product/[id]",
                               query: { id: i._attributes.id },
                             }}
+                            passHref
                           >
                             <Image src={i.picture._text} alt="Product" />
                           </Link>
