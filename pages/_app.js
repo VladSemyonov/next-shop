@@ -57,7 +57,7 @@ function MyApp({ Component, pageProps }) {
   function changeAmount(id, n) {
     setBascket(
       bascket.map((i) =>
-        i._attributes.id === id ? { ...i, amountBuy: Number(n) } : i
+        i._attributes.id === id && n >= 0 ? { ...i, amountBuy: Number(n) } : i
       )
     );
   }
