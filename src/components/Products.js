@@ -1,19 +1,37 @@
-import {useState} from 'react'
+import { useState, useEffect } from "react";
 import ProductCard from "./ProductCard";
 import ToolBar from "./ToolBar";
 
-export default function Products({items}) {
+export default function Products({ items }) {
+  const [columnsSize, setColumnsSize] = useState("small");
+  const [sortValue, setSortValue] = useState("down");
+  const [sortedItems, setSortedItems] = useState([]);
 
-    const [columnsSize, setColumnsSize] = useState('normal')
+  const changeSortValue = (e) => {
+    setSortValue(e);
+  };
 
-    return (
+  useEffect(() => {
+    sortValue === "up" &&
+      setSortedItems(
+        items.sort((a, b) =>
+          Number(a.price._text) - Number(b.price._text) > 0 ? 1 : -1
+        )
+      );
+    sortValue === "down" &&
+      setSortedItems(
+        items.sort((a, b) =>
+          Number(a.price._text) - Number(b.price._text) > 0 ? -1 : 1
+        )
+      );
+  }, [sortValue]);
 
-        <>
-            <ToolBar util={setColumnsSize}/>
-            {items && items.length > 0
-                ? items.map((i, index) => <ProductCard item={i} size={columnsSize} key={index}/>)
-                : 'Ничего не найдено'}
-        </>
-
-    )
+  return (
+    <>
+      <ToolBar util={setColumnsSize} sortType={changeSortValue} />
+      {sortedItems.map((i, index) => (
+        <ProductCard item={i} size={columnsSize} key={index} />
+      ))}
+    </>
+  );
 }

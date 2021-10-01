@@ -1,16 +1,14 @@
-import '../styles/globals.css'
-import '../public/css/main.css'
-import '../public/css/plugins.css'
-import { useState, useEffect, useMemo, createContext } from 'react'
+import "../public/css/main.css";
+import "../public/css/plugins.css";
+import "../styles/globals.css";
+import { useState, useEffect, useMemo, createContext } from "react";
 const AppContext = createContext();
 export { AppContext };
 
 function MyApp({ Component, pageProps }) {
   const [bascket, setBascket] = useState([]);
-  const [user, setUser] = useState({ role: "user", token: "" });
-  const [login, setLogin] = useState(false);
   const [summaryPrice, setSummaryPrice] = useState(0);
-  const [showAlert, setShowAlert] = useState({ opacity: 0, text: "" })
+  const [showAlert, setShowAlert] = useState({ opacity: 0, text: "" });
 
   useEffect(() => {
     if (localStorage.filmsToken) {
@@ -20,7 +18,6 @@ function MyApp({ Component, pageProps }) {
       });
       setAuthorizationHeader(localStorage.filmsToken);
     }
-
   }, []);
 
   useMemo(() => {
@@ -33,13 +30,9 @@ function MyApp({ Component, pageProps }) {
     );
   }, [bascket]);
 
-  const logIn = () => {
-    setLogin(true);
-  };
-
   function setAlert(text) {
-    setShowAlert({ opacity: 1, text: text })
-    setTimeout(() => setShowAlert({ opacity: 0, text: text }), 3000)
+    setShowAlert({ opacity: 1, text: text });
+    setTimeout(() => setShowAlert({ opacity: 0, text: text }), 3000);
   }
 
   function addToBascket(item) {
@@ -70,23 +63,24 @@ function MyApp({ Component, pageProps }) {
   }
 
   function removeBasket() {
-    setBascket([])
+    setBascket([]);
   }
 
-  return (<AppContext.Provider
-    value={{
-      deleteFromBascket: deleteFromBascket,
-      addToBascket: addToBascket,
-      bascket: bascket,
-      changeAmount: changeAmount,
-      removeBasket: removeBasket,
-      summaryPrice: summaryPrice,
-      loginStatus: login,
-      alert: setAlert
-    }}
-  ><Component {...pageProps} />
-  </AppContext.Provider>
-  )
+  return (
+    <AppContext.Provider
+      value={{
+        deleteFromBascket: deleteFromBascket,
+        addToBascket: addToBascket,
+        bascket: bascket,
+        changeAmount: changeAmount,
+        removeBasket: removeBasket,
+        summaryPrice: summaryPrice,
+        alert: setAlert,
+      }}
+    >
+      <Component {...pageProps} />
+    </AppContext.Provider>
+  );
 }
 
-export default MyApp
+export default MyApp;

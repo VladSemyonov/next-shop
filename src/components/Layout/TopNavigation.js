@@ -1,15 +1,21 @@
 import { useEffect, useState, useContext } from "react";
 import { AppContext } from "../../../pages/_app";
-import Link from "next/link"
+import Link from "next/link";
 
 const TopNavigation = () => {
-  const [categories, setCategories] = useState([]);
-  const [showMenu, setShowMenu] = useState("none")
-  const [searchValue, setSearchValue] = useState('')
+  const [showMenu, setShowMenu] = useState("none");
+  const [searchValue, setSearchValue] = useState("");
   const { summaryPrice, bascket, deleteFromBascket } = useContext(AppContext);
   const [navbarTop, setNavbarTop] = useState(0);
+  const [categories, setCategoies] = useState({});
 
   useEffect(() => {
+    async function fetchData() {
+      let res = await fetch("http://vladreact.me/server/categories");
+      let categories = await res.json();
+      setCategoies(categories);
+    }
+    fetchData();
     let prevScrollpos = window.pageYOffset;
     window.onscroll = () => {
       const currentScrollPos = window.pageYOffset;
@@ -22,51 +28,84 @@ const TopNavigation = () => {
     };
   }, []);
 
-  useEffect(
-    () =>
-      fetch("http://vladreact.me/server/categories").then((result) =>
-        result.json().then((result) => setCategories(result))
-      ),
-    []
-  );
+  useEffect(() => {
+    if (showMenu === "block") {
+      window.addEventListener("click", setMenu);
+      return () => window.removeEventListener("click", setMenu);
+    }
+  }, [showMenu]);
 
-  function setMenu(){
-    showMenu === "block" ? setShowMenu("none") : setShowMenu("block")
+  function setMenu() {
+    showMenu === "block" ? setShowMenu("none") : setShowMenu("block");
+  }
+
+  function burgerMenuDom(obj) {
+    let result = [];
+    for (let category in obj) {
+      result.push(
+        <li
+          onClick={() => setShowMenu("none")}
+          className="burger"
+          key={category}
+          style={{
+            height: "35px",
+            fontSize: "20px",
+            padding: "0 2rem",
+            position: "relative",
+          }}
+        >
+          {category}
+          {obj[category].length > 0 &&
+            (function () {
+              let burger = [];
+              obj[category].map((subCategory) =>
+                burger.push(
+                  <div>
+                    <Link href={`/category/${subCategory._attributes.id}`}>
+                      {subCategory._text}
+                    </Link>
+                  </div>
+                )
+              );
+              return <ul className="burger-child">{burger}</ul>;
+            })()}{" "}
+        </li>
+      );
+    }
+    return result;
   }
 
   return (
     <>
       <div className="site-header d-none d-lg-block pt--90">
-      <div className="header-bottom pb--10 fixed-top bg-light border-top border-success" style={{
-          transition: "all .25s ease-in-out",
-          top: `${navbarTop}px`,
-        }}
-        id="nav-bar">
+        <div
+          className="header-bottom pb--10 fixed-top bg-light border-top border-success"
+          style={{
+            transition: "all .25s ease-in-out",
+            top: `${navbarTop}px`,
+          }}
+          id="nav-bar"
+        >
           <div className="container">
             <div className="row align-items-center">
-            <div className="col-lg-3 d-flex justify-content-center">
-                <Link href="/" className="my-logo">
-                  Teemo
-                </Link>
+              <div className="col-lg-3 d-flex justify-content-center">
+                <span className="my-logo">
+                  <Link href="/">Teemo</Link>
+                </span>
               </div>
               <div className="col-lg-5">
                 <div className="header-search-block">
-                  <input type="text" placeholder="Искать в магазине" onInput={(event)=>setSearchValue(event.target.value)}/>
-                  <Link href={{
-                    pathname: "/search/[value]",
-                    query: {value: searchValue}
-                  }}>Искать</Link>
+                  <input
+                    type="text"
+                    placeholder="Искать в магазине"
+                    onInput={(event) => setSearchValue(event.target.value)}
+                  />
+                  <Link href={`/search/${searchValue}`}>Искать</Link>
                 </div>
               </div>
               <div className="col-lg-4">
                 <div className="main-navigation flex-lg-right">
                   <div className="cart-widget">
-                    <div className="login-block">
-                      <Link href="/login" className="font-weight-bold">
-                        Авторизация
-                      </Link>{" "}
-                      <br />
-                    </div>
                     <div className="cart-block">
                       <div className="cart-total">
                         {bascket.length > 0 && (
@@ -85,19 +124,18 @@ const TopNavigation = () => {
                               <div key={index} className=" single-cart-block ">
                                 <div className="cart-product">
                                   <Link
-                                  href={{
-                                    pathname: "/product/[id]",
-                                    query: {id: i._attributes.id}
-                                  }}
+                                    href={`/product/${i._attributes.id}`}
                                     className="image"
                                   >
                                     <img src={i.picture._text} alt="" />
                                   </Link>
                                   <div className="content">
                                     <h3 className="title">
-                                      <a to={`/product/${i._attributes.id}`}>
+                                      <Link
+                                        href={`/product/${i._attributes.id}`}
+                                      >
                                         {i.name._text}
-                                      </a>
+                                      </Link>
                                     </h3>
                                     <p className="price">
                                       {i.amountBuy} × {i.price._text} грн
@@ -114,21 +152,20 @@ const TopNavigation = () => {
                                 </div>
                                 <div className=" single-cart-block ">
                                   <div className="col">
-                                    <a
-                                      to="/bascket"
+                                    <Link
+                                      href="/bascket"
                                       className="btn btn-outline-success d-flex justify-content-around"
                                     >
-                                    <span>
-                                    Перейти в корзину</span>
+                                      <span>Перейти в корзину</span>
                                       <i className="fas fa-chevron-right" />
-                                    </a>
-                                   </div>
+                                    </Link>
+                                  </div>
                                 </div>
                               </div>
                             );
                           })
-                          
-                        ) : (<div className="d-flex justify-content-center">
+                        ) : (
+                          <div className="d-flex justify-content-center">
                             <h3>Корзина пуста</h3>
                           </div>
                         )}
@@ -143,25 +180,27 @@ const TopNavigation = () => {
         <div className="header-middle pt--10 pb--10">
           <div className="container">
             <div className="row align-items-center">
-            <div className="col-lg-3">
+              <div className="col-lg-3">
                 <nav className="category-nav   ">
                   <div>
-                    <a className="category-trigger" onClick={setMenu}>
+                    <a
+                      className="category-trigger"
+                      style={{ cursor: "pointer" }}
+                      onClick={setMenu}
+                    >
                       <i className="fa fa-bars" />
                       Выбрать категории
                     </a>
-                    <ul style={{display: showMenu, position: "absolute", width: "100%", background: "white", border: "1px solid lightgrey"}}>
-                      {categories.map((i) => (
-                        <li onClick={()=>setShowMenu("none")} key={i._attributes.id}
-                        style={{height: "35px", color: "black", fontSize: "20px", padding: "0 2rem"}}>
-                          <Link href={{
-                            pathname: "/category/[id]",
-                            query: {id: i._attributes.id}
-                          }}>
-                            {i._text}
-                          </Link>
-                        </li>
-                      ))}
+                    <ul
+                      style={{
+                        display: showMenu,
+                        position: "absolute",
+                        width: "100%",
+                        background: "white",
+                        border: "1px solid lightgrey",
+                      }}
+                    >
+                      {burgerMenuDom(categories)}
                     </ul>
                   </div>
                 </nav>
@@ -180,239 +219,8 @@ const TopNavigation = () => {
               <div className="col-lg-6">
                 <div className="main-navigation flex-lg-right">
                   <ul className="main-menu menu-right ">
-                    <li className="menu-item has-children">
-                      <a href="#">
-                        Home{" "}
-                        <i className="fas fa-chevron-down dropdown-arrow" />
-                      </a>
-                      <ul className="sub-menu">
-                        <li>
-                          <a href="index.html">Home One</a>
-                        </li>
-                        <li>
-                          <a href="index-2.html">Home Two</a>
-                        </li>
-                        <li>
-                          <a href="index-3.html">Home Three</a>
-                        </li>
-                        <li>
-                          <a href="index-4.html">Home Four</a>
-                        </li>
-                        <li>
-                          <a href="index-5.html">Home Five</a>
-                        </li>
-                      </ul>
-                    </li>
-                    <li className="menu-item has-children mega-menu">
-                      <a href="#">
-                        shop{" "}
-                        <i className="fas fa-chevron-down dropdown-arrow" />
-                      </a>
-                      <ul className="sub-menu four-column">
-                        <li className="cus-col-25">
-                          <h3 className="menu-title">
-                            <a href="#">Shop Grid </a>
-                          </h3>
-                          <ul className="mega-single-block">
-                            <li>
-                              <a href="shop-grid.html">Fullwidth</a>
-                            </li>
-                            <li>
-                              <a href="shop-grid-left-sidebar.html">
-                                left Sidebar
-                              </a>
-                            </li>
-                            <li>
-                              <a href="shop-grid-right-sidebar.html">
-                                Right Sidebar
-                              </a>
-                            </li>
-                          </ul>
-                        </li>
-                        <li className="cus-col-25">
-                          <h3 className="menu-title">
-                            <a href="#">Shop List</a>
-                          </h3>
-                          <ul className="mega-single-block">
-                            <li>
-                              <a href="shop-list.html">Fullwidth</a>
-                            </li>
-                            <li>
-                              <a href="shop-list-left-sidebar.html">
-                                left Sidebar
-                              </a>
-                            </li>
-                            <li>
-                              <a href="shop-list-right-sidebar.html">
-                                Right Sidebar
-                              </a>
-                            </li>
-                          </ul>
-                        </li>
-                        <li className="cus-col-25">
-                          <h3 className="menu-title">
-                            <a href="#">Product Details 1</a>
-                          </h3>
-                          <ul className="mega-single-block">
-                            <li>
-                              <a href="product-details.html">
-                                Product Details Page
-                              </a>
-                            </li>
-                            <li>
-                              <a href="product-details-affiliate.html">
-                                Product Details Affiliate
-                              </a>
-                            </li>
-                            <li>
-                              <a href="product-details-group.html">
-                                Product Details Group
-                              </a>
-                            </li>
-                            <li>
-                              <a href="product-details-variable.html">
-                                Product Details Variables
-                              </a>
-                            </li>
-                          </ul>
-                        </li>
-                        <li className="cus-col-25">
-                          <h3 className="menu-title">
-                            <a href="#">Product Details 2</a>
-                          </h3>
-                          <ul className="mega-single-block">
-                            <li>
-                              <a href="product-details-left-thumbnail.html">
-                                left Thumbnail
-                              </a>
-                            </li>
-                            <li>
-                              <a href="product-details-right-thumbnail.html">
-                                Right Thumbnail
-                              </a>
-                            </li>
-                            <li>
-                              <a href="product-details-left-gallery.html">
-                                Left Gallery
-                              </a>
-                            </li>
-                            <li>
-                              <a href="product-details-right-gallery.html">
-                                Right Gallery
-                              </a>
-                            </li>
-                          </ul>
-                        </li>
-                      </ul>
-                    </li>
-                    <li className="menu-item has-children">
-                      <a href="#">
-                        Pages{" "}
-                        <i className="fas fa-chevron-down dropdown-arrow"></i>
-                      </a>
-                      <ul className="sub-menu">
-                        <li>
-                          <a href="cart.html">Cart</a>
-                        </li>
-                        <li>
-                          <a href="checkout.html">Checkout</a>
-                        </li>
-                        <li>
-                          <a href="compare.html">Compare</a>
-                        </li>
-                        <li>
-                          <a href="wishlist.html">Wishlist</a>
-                        </li>
-                        <li>
-                          <a href="login-register.html">Login Register</a>
-                        </li>
-                        <li>
-                          <a href="my-account.html">My Account</a>
-                        </li>
-                        <li>
-                          <a href="order-complete.html">Order Complete</a>
-                        </li>
-                        <li>
-                          <a href="faq.html">Faq</a>
-                        </li>
-                        <li>
-                          <a href="contact-2.html">contact 02</a>
-                        </li>
-                      </ul>
-                    </li>
-                    <li className="menu-item has-children mega-menu">
-                      <a href="#">
-                        Blog{" "}
-                        <i className="fas fa-chevron-down dropdown-arrow"></i>
-                      </a>
-                      <ul className="sub-menu three-column">
-                        <li className="cus-col-33">
-                          <h3 className="menu-title">
-                            <a href="#">Blog Grid</a>
-                          </h3>
-                          <ul className="mega-single-block">
-                            <li>
-                              <a href="blog.html">Full Widh (Default)</a>
-                            </li>
-                            <li>
-                              <a href="blog-left-sidebar.html">left Sidebar</a>
-                            </li>
-                            <li>
-                              <a href="blog-right-sidebar.html">
-                                Right Sidebar
-                              </a>
-                            </li>
-                          </ul>
-                        </li>
-                        <li className="cus-col-33">
-                          <h3 className="menu-title">
-                            <a href="#">Blog List </a>
-                          </h3>
-                          <ul className="mega-single-block">
-                            <li>
-                              <a href="blog-list-left-sidebar.html">
-                                left Sidebar
-                              </a>
-                            </li>
-                            <li>
-                              <a href="blog-list-right-sidebar.html">
-                                Right Sidebar
-                              </a>
-                            </li>
-                          </ul>
-                        </li>
-                        <li className="cus-col-33">
-                          <h3 className="menu-title">
-                            <a href="#">Blog Details</a>
-                          </h3>
-                          <ul className="mega-single-block">
-                            <li>
-                              <a href="blog-details.html">
-                                Image Format (Default)
-                              </a>
-                            </li>
-                            <li>
-                              <a href="blog-details-gallery.html">
-                                Gallery Format
-                              </a>
-                            </li>
-                            <li>
-                              <a href="blog-details-audio.html">Audio Format</a>
-                            </li>
-                            <li>
-                              <a href="blog-details-video.html">Video Format</a>
-                            </li>
-                            <li>
-                              <a href="blog-details-left-sidebar.html">
-                                left Sidebar
-                              </a>
-                            </li>
-                          </ul>
-                        </li>
-                      </ul>
-                    </li>
                     <li className="menu-item">
-                      <a to="/contacts">Контакты</a>
+                      <Link href="/contacts">Контакты</Link>
                     </li>
                   </ul>
                 </div>
@@ -420,7 +228,6 @@ const TopNavigation = () => {
             </div>
           </div>
         </div>
-        
       </div>
       <div className="site-mobile-menu">
         <header className="mobile-header d-block d-lg-none pt--10 pb-md--10">
@@ -438,15 +245,7 @@ const TopNavigation = () => {
                       <i className="fa fa-bars" />
                       Выбрать категорию
                     </a>
-                    <ul className="category-menu">
-                      {categories.map((i) => (
-                        <li className={"cat-item"} key={i._attributes.id}>
-                          <a to={`/category/${i._attributes.id}`}>
-                            {i._text}
-                          </a>
-                        </li>
-                      ))}
-                    </ul>
+                    <ul className="category-menu"></ul>
                   </div>
                 </nav>
               </div>
