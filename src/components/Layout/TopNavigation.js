@@ -1,6 +1,7 @@
 import { useEffect, useState, useContext } from "react";
 import { AppContext } from "../../../pages/_app";
 import Link from "next/link";
+import Image from "next/image";
 
 const TopNavigation = () => {
   const [showMenu, setShowMenu] = useState("none");
@@ -130,8 +131,15 @@ const TopNavigation = () => {
                                     <div className="image">
                                       <Link
                                         href={`/product/${i._attributes.id}`}
+                                        passHref
                                       >
-                                        <img src={i.picture._text} alt="" />
+                                        <Image
+                                          width="100"
+                                          height="150"
+                                          layout="responsive"
+                                          src={i.picture._text}
+                                          alt=""
+                                        />
                                       </Link>
                                     </div>
                                     <div className="content">
@@ -159,7 +167,7 @@ const TopNavigation = () => {
                               );
                             })}
                             <div className=" single-cart-block ">
-                              <Link href="/bascket">
+                              <Link href="/bascket" passHref>
                                 <div className="col btn btn-outline-success d-flex justify-content-around">
                                   <span>Перейти в корзину</span>
                                   <i className="fas fa-chevron-right" />
@@ -236,11 +244,7 @@ const TopNavigation = () => {
         <header className="mobile-header d-block d-lg-none pt--10 pb-md--10">
           <div className="container">
             <div className="row align-items-sm-end align-items-center">
-              <div className="col-md-4 col-7">
-                <a href="/" className="site-brand">
-                  <img src="" alt="" />
-                </a>
-              </div>
+              <div className="col-md-4 col-7"></div>
               <div className="col-md-5 order-3 order-md-2">
                 <nav className="category-nav">
                   <div>
@@ -256,9 +260,9 @@ const TopNavigation = () => {
                 <div className="mobile-header-btns header-top-widget">
                   <ul className="header-links">
                     <li className="sin-link">
-                      <a href="/" className="cart-link link-icon">
+                      <Link href="/" className="cart-link link-icon" passHref>
                         <i className="ion-bag"></i>
-                      </a>
+                      </Link>
                     </li>
                     <li className="sin-link">
                       <a

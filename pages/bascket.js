@@ -3,6 +3,7 @@ import { AppContext } from "./_app";
 import InputMask from "react-input-mask";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import Image from "next/image";
 
 export default function Bascket() {
   const router = useRouter();
@@ -128,7 +129,7 @@ export default function Bascket() {
                               query: { id: i._attributes.id },
                             }}
                           >
-                            <img src={i.picture._text} alt="Product" />
+                            <Image src={i.picture._text} alt="Product" />
                           </Link>
                         </td>
                         <td className="pro-title">
