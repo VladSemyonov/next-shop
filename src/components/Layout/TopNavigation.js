@@ -43,12 +43,12 @@ const TopNavigation = () => {
 
   function burgerMenuDom(obj) {
     let result = [];
-    for (let category of obj) {
+    for (let category in obj) {
       result.push(
         <Link
           href={{
             pathname: "/category/[id]",
-            query: { id: category._attributes.id },
+            query: { id: obj[category]._attributes.id },
           }}
         >
           <li
@@ -62,7 +62,7 @@ const TopNavigation = () => {
               position: "relative",
             }}
           >
-            {category._text}
+            {obj[category]._text}
           </li>
         </Link>
       );
