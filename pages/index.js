@@ -5,7 +5,6 @@ import Courusel from "../src/components/Courusel";
 import ScrollToTop from "../src/components/ScrollToTop";
 
 export default function Home() {
-  console.log(process.env.PORT);
   return (
     <Layout title="Купить смеситель, душевую кабину, сантехнику | Teemo shop">
       <Benefits />
