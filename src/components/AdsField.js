@@ -7,7 +7,7 @@ export default function AdsField({ title, query }) {
   const [items, setItems] = useState();
 
   useEffect(() => {
-    fetch(`http://127.0.0.1/api/content/${query}`)
+    fetch(`http://127.0.0.1:3000/api/content/${query}`)
       .then((result) => result.json())
       .then((result) => setItems(result));
   }, []);
