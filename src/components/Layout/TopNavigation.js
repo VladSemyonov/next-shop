@@ -42,35 +42,28 @@ const TopNavigation = () => {
 
   function burgerMenuDom(obj) {
     let result = [];
-    for (let category in obj) {
+    for (let category of obj) {
       result.push(
-        <li
-          onClick={() => setShowMenu("none")}
-          className="burger"
-          key={category}
-          style={{
-            height: "35px",
-            fontSize: "20px",
-            padding: "0 2rem",
-            position: "relative",
+        <Link
+          href={{
+            pathname: "/category/[id]",
+            query: { id: category._attributes.id },
           }}
         >
-          {category}
-          {obj[category].length > 0 &&
-            (function () {
-              let burger = [];
-              obj[category].map((subCategory) =>
-                burger.push(
-                  <div>
-                    <Link href={`/category/${subCategory._attributes.id}`}>
-                      {subCategory._text}
-                    </Link>
-                  </div>
-                )
-              );
-              return <ul className="burger-child">{burger}</ul>;
-            })()}{" "}
-        </li>
+          <li
+            onClick={() => setShowMenu("none")}
+            className="burger"
+            key={category}
+            style={{
+              height: "35px",
+              fontSize: "20px",
+              padding: "0 2rem",
+              position: "relative",
+            }}
+          >
+            {category._text}
+          </li>
+        </Link>
       );
     }
     return result;

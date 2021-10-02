@@ -168,13 +168,13 @@ export default function Category({ data, items }) {
 
 export const getServerSideProps = async (context) => {
   let res = await fetch(
-    `https://teeno.vercel.app/api/test/${context.query.id}`
+    `https://teemo.vercel.app/api/test/${context.query.id}`
   );
   let filtersRes = await res.json();
   let data = Object.assign(initObj, filtersRes);
 
   let res2 = await fetch(
-    `https://teeno.vercel.app/api/category/${context.query.id}`
+    `https://teemo.vercel.app/api/category/${context.query.id}`
   );
   let items = await res2.json();
 
