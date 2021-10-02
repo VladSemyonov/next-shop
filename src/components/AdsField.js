@@ -7,7 +7,7 @@ export default function AdsField({ title, query }) {
   const [items, setItems] = useState();
 
   useEffect(() => {
-    fetch(`http://vladreact.me/server/content/${query}`)
+    fetch(`http://127.0.0.1/api/content/${query}`)
       .then((result) => result.json())
       .then((result) => setItems(result));
   }, []);
@@ -42,8 +42,8 @@ export default function AdsField({ title, query }) {
                       <div className="card-image">
                         <a to={`/product/${item._attributes.id}`}>
                           <Image
-                            width='250'
-                            height='289'
+                            width="250"
+                            height="289"
                             src={item.picture._text}
                             alt={item.name._text}
                             style={{ height: "auto" }}
