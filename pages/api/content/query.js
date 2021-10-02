@@ -8,9 +8,7 @@ export default function handler(req, res) {
 
 function getPostContent(cat) {
   let result = [];
-  let currentArr = resultArr.productsArr.filter(
-    (i) => i.categoryId._text === cat
-  );
+  let currentArr = data.productsArr.filter((i) => i.categoryId._text === cat);
   let count = currentArr.length;
   for (let i = 0; i < 8; i++) {
     let index = Math.floor(Math.random() * count);
