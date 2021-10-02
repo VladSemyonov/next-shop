@@ -62,8 +62,8 @@ export default function ProductCard({ item, size }) {
                 passHref
               >
                 <Image
-                  width={250}
-                  height={289}
+                  width='250'
+                  height='289'
                   src={item.picture._text}
                   alt={item.name._text}
                   style={{

@@ -130,7 +130,7 @@ export default function Bascket() {
                             }}
                             passHref
                           >
-                            <Image src={i.picture._text} alt="Product" />
+                            <Image width="100" height="150" src={i.picture._text} alt="Product" />
                           </Link>
                         </td>
                         <td className="pro-title">

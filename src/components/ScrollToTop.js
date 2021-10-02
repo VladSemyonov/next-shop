@@ -39,7 +39,7 @@ export default function ScrollToTop() {
       onClick={() => scrollTo(0)}
       className={"btn "}
     >
-      <Image src={upIcon} alt="" />
+      <Image width='30' height='30' src={upIcon} alt="" />
     </button>
   );
 }
