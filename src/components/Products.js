@@ -12,19 +12,19 @@ export default function Products({ items }) {
   };
 
   useEffect(() => {
-    sortValue === "up" &&
+    sortValue === "down" &&
       setSortedItems(
         items.sort((a, b) =>
           Number(a.price._text) - Number(b.price._text) > 0 ? 1 : -1
         )
       );
-    sortValue === "down" &&
+    sortValue === "up" &&
       setSortedItems(
         items.sort((a, b) =>
           Number(a.price._text) - Number(b.price._text) > 0 ? -1 : 1
         )
       );
-  }, [sortValue]);
+  }, [sortValue, items]);
 
   return (
     <>

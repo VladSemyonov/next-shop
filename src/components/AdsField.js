@@ -8,62 +8,28 @@ export default function AdsField({ title, query }) {
 
   useEffect(() => {
     fetch(`https://teemo.vercel.app/api/content/${query}`)
+      //fetch(`http://vladreact.me/server/content/${query}`)
       .then((result) => result.json())
       .then((result) => setItems(result));
   }, []);
 
   return (
-    <div className={"container"} style={{ marginBottom: "60px" }}>
+    <div className={"container p-0"} style={{ marginBottom: "60px" }}>
       <div style={{ borderLeft: "solid 1px lightgrey" }} className={"mt-2"}>
-        <h4 className="mb-0 p-2">{title}</h4>
+        <h4 className="mb-0">{title}</h4>
       </div>
       <div
+        className="row mw-100"
         style={{
           borderLeft: "1px solid lightgrey",
           borderTop: "1px solid lightgrey",
           boxShadow: "inset 0 0 5px gray",
-          padding: "0 4px",
+          padding: "10px",
         }}
       >
-        {items && (
-          <Carousel itemWidth={350}>
-            {items.map((item, index) => (
-              <div key={index} className={`col-12 mys`}>
-                <div className="product-card">
-                  <div className="product-grid-content">
-                    <div className="product-header">
-                      <span style={{ height: "80px" }}>
-                        <a to={`/product/${item?._attributes.id}`}>
-                          {item.name._text}
-                        </a>
-                      </span>
-                    </div>
-                    <div className="product-card--body">
-                      <div className="card-image">
-                        <a to={`/product/${item._attributes.id}`}>
-                          <Image
-                            width="250"
-                            height="289"
-                            src={item.picture._text}
-                            alt={item.name._text}
-                            style={{ height: "auto" }}
-                          />
-                        </a>
-                      </div>
-                      <div className="price-block">
-                        <div className="d-flex align-items-center justify-content-center">
-                          <span className="price">
-                            {item.price._text} {item.currencyId._text}
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </Carousel>
-        )}
+        {items.map((item, index) => (
+          <ProductCard key={index} item={item} size={"small"} />
+        ))}
       </div>
     </div>
   );

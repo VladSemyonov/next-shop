@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState } from "react";
 import Products from "../../src/components/Products";
 import { useRouter } from "next/dist/client/router";
 import { advancedFilters, createDom } from "../../src/utils";
@@ -18,10 +18,10 @@ export default function Category({ data, items }) {
   const [filteredItems, setFilteredItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filters, setFilters] = useState({});
-  console.log(data, parames);
+
   useEffect(() => {
-    setFilteredItems(items);
     setParams(data);
+    setFilteredItems(items);
   }, [items, data]);
 
   useEffect(() => doFilter2(), [filters, parames]);
@@ -40,8 +40,8 @@ export default function Category({ data, items }) {
     let arr = [].concat(items);
     let b = arr.filter(
       (i) =>
-        Number(i.price._text) >= parames.price.higher &&
-        Number(i.price._text) <= parames.price.below
+        Number(i.price._text) >= parames?.price?.higher &&
+        Number(i.price._text) <= parames?.price?.below
     );
     if (filters.vendor) {
       b = b.filter((i) => i.vendor._text in filters.vendor && i);
@@ -118,13 +118,13 @@ export default function Category({ data, items }) {
                     <div>Ценна:</div>
                     От{" "}
                     <input
-                      onInput={(e) => priceFiltering(e)}
+                      onInput={priceFiltering}
                       name={"higher"}
                       type={"number"}
                     />
                     до{" "}
                     <input
-                      onInput={(e) => priceFiltering(e)}
+                      onInput={priceFiltering}
                       name={"below"}
                       type={"number"}
                     />
@@ -169,12 +169,14 @@ export default function Category({ data, items }) {
 export const getServerSideProps = async (context) => {
   let res = await fetch(
     `https://teemo.vercel.app/api/test/${context.query.id}`
+    //`http://vladreact.me/server/test/${context.query.id}`
   );
   let filtersRes = await res.json();
-  let data = Object.assign(initObj, filtersRes);
+  let data = await Object.assign(initObj, filtersRes);
 
   let res2 = await fetch(
     `https://teemo.vercel.app/api/category/${context.query.id}`
+    //`http://vladreact.me/server/category/${context.query.id}`
   );
   let items = await res2.json();
 

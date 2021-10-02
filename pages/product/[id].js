@@ -6,7 +6,6 @@ import Image from "next/image";
 
 export default function Product({ product }) {
   const router = useRouter();
-  const { id } = router.query;
   const { addToBascket } = useContext(AppContext);
   const [middleScore, setMiddleScore] = useState(0);
   const [leftCol, setLeftCol] = useState([]);
@@ -98,6 +97,7 @@ export default function Product({ product }) {
 export const getServerSideProps = async (context) => {
   let res = await fetch(
     `https://teeno.vercel.app/api/product/${context.query.id}`
+    //`http://vladreact.me/server/product/${context.query.id}`
   );
   let [data] = await res.json();
 

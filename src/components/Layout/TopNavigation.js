@@ -13,6 +13,7 @@ const TopNavigation = () => {
   useEffect(() => {
     async function fetchData() {
       let res = await fetch("https://teemo.vercel.app/api/categories");
+      //let res = await fetch("http://vladreact.me/server/categories");
       let categories = await res.json();
       setCategoies(categories);
     }
@@ -204,7 +205,7 @@ const TopNavigation = () => {
                         border: "1px solid lightgrey",
                       }}
                     >
-                      {burgerMenuDom(categories)}
+                      {burgerMenuDom(categories.Сантехника)}
                     </ul>
                   </div>
                 </nav>

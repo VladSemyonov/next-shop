@@ -8,6 +8,7 @@ export default function Courusel() {
 
   useEffect(() => {
     fetch(`https://teemo.vercel.app/api/content/Гидробоксы`)
+      //fetch(`http://vladreact.me/server/content/Гидробоксы`)
       .then((result) => result.json())
       .then((result) => setItems(result));
   }, []);
