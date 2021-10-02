@@ -167,12 +167,14 @@ export default function Category({ data, items }) {
 }
 
 export const getServerSideProps = async (context) => {
-  let res = await fetch(`http://vladreact.me/server/test/${context.query.id}`);
+  let res = await fetch(
+    `https://teeno.vercel.app/api/test/${context.query.id}`
+  );
   let filtersRes = await res.json();
   let data = Object.assign(initObj, filtersRes);
 
   let res2 = await fetch(
-    `http://vladreact.me/server/category/${context.query.id}`
+    `https://teeno.vercel.app/api/category/${context.query.id}`
   );
   let items = await res2.json();
 

@@ -97,7 +97,7 @@ export default function Product({ product }) {
 
 export const getServerSideProps = async (context) => {
   let res = await fetch(
-    `http://vladreact.me/server/product/${context.query.id}`
+    `https://teeno.vercel.app/api/product/${context.query.id}`
   );
   let [data] = await res.json();
 
