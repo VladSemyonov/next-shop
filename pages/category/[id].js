@@ -18,8 +18,8 @@ export default function Category({ data, items }) {
   const [filteredItems, setFilteredItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filters, setFilters] = useState({});
-
-  useMemo(() => {
+  console.log(data, parames);
+  useEffect(() => {
     setFilteredItems(items);
     setParams(data);
   }, [items, data]);

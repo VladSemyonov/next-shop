@@ -9,8 +9,8 @@ export default function Home() {
     <Layout title="Купить смеситель, душевую кабину, сантехнику | Teemo shop">
       <Benefits />
       <Courusel />
-      <AdsField title="Рабочая штука" query="Гидробоксы" />
-      <AdsField title="Рабочая штука" query="Для ванны" />
+      <AdsField title="Топ продаж" query="Гидробоксы" />
+      <AdsField title="Новые товары" query="Для ванны" />
       <ScrollToTop />
     </Layout>
   );

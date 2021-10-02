@@ -7,7 +7,7 @@ export default function Courusel() {
   const [items, setItems] = useState();
 
   useEffect(() => {
-    fetch(`https://https://teemo.vercel.app/api/content/Гидробоксы`)
+    fetch(`https://teemo.vercel.app/api/content/Гидробоксы`)
       .then((result) => result.json())
       .then((result) => setItems(result));
   }, []);
