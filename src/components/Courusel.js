@@ -7,8 +7,7 @@ export default function Courusel() {
   const [items, setItems] = useState();
 
   useEffect(() => {
-    fetch(`http://vladreact.me/server/content/Гидробоксы`)
-      //fetch(`http://localhost:3013/server/content/${query}`)
+    fetch(`https://https://teemo.vercel.app/api/content/Гидробоксы`)
       .then((result) => result.json())
       .then((result) => setItems(result));
   }, []);
@@ -38,6 +37,7 @@ export default function Courusel() {
                     loading="lazy"
                     alt={i.name._text}
                     height="290"
+                    width="180"
                   />
                 </div>
                 <div className="col-8 d-flex flex-column justify-content-around">
