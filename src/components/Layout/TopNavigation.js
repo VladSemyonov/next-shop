@@ -13,9 +13,8 @@ const TopNavigation = () => {
   useEffect(() => {
     async function fetchData() {
       let res = await fetch("https://teemo.vercel.app/api/categories");
-      console.log(res);
       let categories = await res.json();
-      setCategoies(res);
+      setCategoies(categories);
     }
     fetchData();
     let prevScrollpos = window.pageYOffset;
