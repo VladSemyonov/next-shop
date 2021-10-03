@@ -50,6 +50,7 @@ const TopNavigation = () => {
             pathname: "/category/[id]",
             query: { id: obj[category]._attributes.id },
           }}
+          passHref
         >
           <li
             onClick={() => setShowMenu("none")}

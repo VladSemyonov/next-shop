@@ -1,10 +1,9 @@
 import { useEffect, useState } from "react";
-import Carousel from "@brainhubeu/react-carousel";
 import "@brainhubeu/react-carousel/lib/style.css";
-import Image from "next/image";
+import ProductCard from "./ProductCard";
 
 export default function AdsField({ title, query }) {
-  const [items, setItems] = useState();
+  const [items, setItems] = useState([]);
 
   useEffect(() => {
     fetch(`https://teemo.vercel.app/api/content/${query}`)
