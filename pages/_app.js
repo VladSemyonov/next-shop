@@ -4,6 +4,7 @@ import "../styles/globals.css";
 import { useState, useEffect, useMemo, createContext } from "react";
 const AppContext = createContext();
 export { AppContext };
+import AlertToBasket from "../src/components/AlertToBasket";
 
 function MyApp({ Component, pageProps }) {
   const [bascket, setBascket] = useState([]);
@@ -30,9 +31,9 @@ function MyApp({ Component, pageProps }) {
     );
   }, [bascket]);
 
-  function setAlert(text) {
-    setShowAlert({ opacity: 1, text: text });
-    setTimeout(() => setShowAlert({ opacity: 0, text: text }), 3000);
+  function setAlert(obj) {
+    setShowAlert(obj);
+    setTimeout(() => setShowAlert({ ...obj, opacity: 0 }), 3000);
   }
 
   function addToBascket(item) {
@@ -78,6 +79,7 @@ function MyApp({ Component, pageProps }) {
         alert: setAlert,
       }}
     >
+      <AlertToBasket trigger={showAlert} />
       <Component {...pageProps} />
     </AppContext.Provider>
   );

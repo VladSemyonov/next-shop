@@ -13,7 +13,7 @@ export default function ProductCard({ item, size }) {
 
   function setAction(i) {
     addToBascket(i);
-    alert("Товар добавлен в корзину");
+    alert({ opacity: 1, text: "Товар добавлен в корзину", status: 200 });
   }
 
   useEffect(() => {
