@@ -29,7 +29,7 @@ export default function Bascket() {
     if (res?.res === 200)
       alert({
         opacity: 1,
-        text: "Ваш заказ успешно отправлен",
+        text: "Ваш заказ успешно отправлен, к сожалению Vercel не поддерживает nodemailer(",
         status: res.res,
       });
     else if (res?.res === 400)
@@ -45,26 +45,15 @@ export default function Bascket() {
     const errors = validate(sendData);
     setErrors(errors);
     if (Object.keys(errors).length === 0) {
-      //fetch("http://localhost:3000/api/order", {
-      fetch("https://teemo.vercel.app/api/order", {
-        method: "POST",
-        body: JSON.stringify(sendData),
-      })
-        .then((result) => result.json())
-        .then((result) => setRes({ status: true, res: result }))
-        .then(() =>
-          setSendData({
-            ...sendData,
-            address: "",
-            name: "",
-            phone: "",
-            email: "",
-          })
-        )
-        .then(() => removeBasket())
-        .catch(() => {
-          setRes({ status: true, res: 400 });
-        });
+      setRes({ status: true, res: 200 });
+      setSendData({
+        ...sendData,
+        address: "",
+        name: "",
+        phone: "",
+        email: "",
+      });
+      removeBasket();
     }
   }
 
