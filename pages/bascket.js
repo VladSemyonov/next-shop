@@ -19,41 +19,41 @@ export default function Bascket() {
   });
   const { bascket, deleteFromBascket, changeAmount, removeBasket, alert } =
     useContext(AppContext);
-
   const input = React.useRef();
 
   useEffect(() => {
     bascket.length === 0 && router.replace("/");
   });
 
+  useEffect(() => {
+    if (res?.res === 200)
+      alert({
+        opacity: 1,
+        text: "Ваш заказ успешно отправлен, к сожалению Vercel не поддерживает nodemailer(",
+        status: res.res,
+      });
+    else if (res?.res === 400)
+      alert({
+        opacity: 1,
+        text: "Произошла ошибка сервера",
+        status: res.res,
+      });
+  }, [res.res]);
+
   function createOrder(e) {
     e.preventDefault();
     const errors = validate(sendData);
     setErrors(errors);
     if (Object.keys(errors).length === 0) {
-      fetch("http://vladreact.me/server/order", {
-        method: "POST",
-        headers: new Headers({
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        }),
-        body: JSON.stringify(sendData),
-      })
-        .then((result) => setRes({ status: true, res: result }))
-        .then(() =>
-          setSendData({
-            ...sendData,
-            address: "",
-            name: "",
-            phone: "",
-            email: "",
-          })
-        )
-        .then(() => removeBasket())
-        .catch(() => {
-          setRes({ status: true, res: { ok: false } });
-        });
-      alert("Ваш заказ отправлен");
+      setRes({ status: true, res: 200 });
+      setSendData({
+        ...sendData,
+        address: "",
+        name: "",
+        phone: "",
+        email: "",
+      });
+      removeBasket();
     }
   }
 
@@ -104,7 +104,7 @@ export default function Bascket() {
         <div className="row">
           <div className="col-12">
             {res.status ? (
-              res.res.ok ? (
+              res.res === 200 ? (
                 <h1 style={{ color: "green" }}>Thank u!</h1>
               ) : (
                 <h1 style={{ color: "red" }}>error</h1>
@@ -130,7 +130,12 @@ export default function Bascket() {
                             }}
                             passHref
                           >
-                            <Image width="100" height="150" src={i.picture._text} alt="Product" />
+                            <Image
+                              width="100"
+                              height="150"
+                              src={i.picture._text}
+                              alt="Product"
+                            />
                           </Link>
                         </td>
                         <td className="pro-title">
