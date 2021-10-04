@@ -25,8 +25,8 @@ export default function Search({ items }) {
 
 export const getServerSideProps = async (context) => {
   let res2 = await fetch(
-    //`https://teemo.vercel.app/api/category/${context.query.id}`
-    `http://localhost:3000/api/search/${context.query.selector}`
+    `https://teemo.vercel.app/api/category/${context.query.id}`
+    //`http://localhost:3000/api/search/${context.query.selector}`
   );
   let items = await res2.json();
 
