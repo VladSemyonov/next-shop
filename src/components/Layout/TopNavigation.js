@@ -2,6 +2,7 @@ import { useEffect, useState, useContext } from "react";
 import { AppContext } from "../../../pages/_app";
 import Link from "next/link";
 import Image from "next/image";
+import { useRouter } from "next/router";
 
 const TopNavigation = () => {
   const [showMenu, setShowMenu] = useState("none");
@@ -9,11 +10,12 @@ const TopNavigation = () => {
   const { summaryPrice, bascket, deleteFromBascket } = useContext(AppContext);
   const [navbarTop, setNavbarTop] = useState(0);
   const [categories, setCategoies] = useState({});
+  const router = useRouter();
 
   useEffect(() => {
     async function fetchData() {
-      let res = await fetch("https://teemo.vercel.app/api/categories");
-      //let res = await fetch("http://vladreact.me/server/categories");
+      //let res = await fetch("https://teemo.vercel.app/api/categories");
+      let res = await fetch("http://vladreact.me/server/categories");
       let categories = await res.json();
       setCategoies(categories);
     }
@@ -46,6 +48,7 @@ const TopNavigation = () => {
     for (let category in obj) {
       result.push(
         <Link
+          key={obj[category]._attributes.id}
           href={{
             pathname: "/category/[id]",
             query: { id: obj[category]._attributes.id },
@@ -90,13 +93,24 @@ const TopNavigation = () => {
                 </span>
               </div>
               <div className="col-lg-5">
-                <div className="header-search-block">
+                <div className="header-search-block d-flex">
                   <input
                     type="text"
                     placeholder="Искать в магазине"
                     onInput={(event) => setSearchValue(event.target.value)}
                   />
-                  <Link href={`/search/${searchValue}`}>Искать</Link>
+                  <button
+                    className="btn btn-success"
+                    disabled={searchValue.length == 0}
+                    onClick={() =>
+                      router.replace({
+                        pathname: "/search",
+                        query: { selector: searchValue },
+                      })
+                    }
+                  >
+                    Искать
+                  </button>
                 </div>
               </div>
               <div className="col-lg-4">
