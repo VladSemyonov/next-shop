@@ -1,0 +1,181 @@
+@import url("https://fonts.googleapis.com/css2?family=Russo+One&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+li {
+  list-style: none;
+}
+
+img {
+  pointer-events: none;
+}
+
+.my-logo {
+  font-family: "Russo One", sans-serif;
+  font-weight: bold;
+  font-size: 50px;
+  color: #dbb81f;
+}
+
+button,
+button:active,
+button:focus {
+  outline: none;
+}
+
+a {
+  text-decoration: none;
+  color: black;
+}
+
+a:hover {
+  text-decoration: none;
+  color: black;
+}
+
+a:visited {
+  color: black;
+}
+
+.my-logo {
+  transition: 0.7s;
+}
+
+.my-logo:hover {
+  text-decoration: none;
+  color: #289709;
+  cursor: pointer;
+}
+
+.my_btn {
+  color: green;
+}
+
+.my_btn:hover {
+  color: white;
+}
+
+.hide-scroll::-webkit-scrollbar {
+  width: 0;
+}
+
+.hide-scroll {
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.mys::before {
+  position: absolute;
+  background: #e5e5e5;
+  content: "";
+  left: -16px;
+  height: 100%;
+  width: 1px;
+  top: 0;
+}
+
+.burger {
+  height: 50px;
+  display: flex;
+  padding: 0 2rem;
+  position: relative;
+  vertical-align: middle !important;
+  align-items: center;
+}
+
+.burger:hover {
+  cursor: pointer;
+  background-color: #94f710ad;
+}
+
+.burger-child {
+  width: 100%;
+  top: 0;
+  background: white;
+  height: 33%;
+  height: 100%;
+  flex-wrap: wrap;
+}
+
+.active-category {
+  background-color: #289709;
+  color: white !important;
+}
+
+.child-item {
+  display: flex;
+  width: 48%;
+  font-weight: bold;
+  font-size: 20px;
+  padding: 10px 5px;
+}
+
+.child-item-link {
+  justify-content: center;
+  background-color: rgba(35, 247, 7, 0.5);
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+.child-item-link:hover {
+  cursor: pointer;
+  background-color: lightgrey;
+  width: 100%;
+  height: 100%;
+}
+
+.post-hidden {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: auto;
+  background: rgba(42, 211, 8, 0.9);
+  overflow: hidden;
+  z-index: 5;
+  box-sizing: border-box;
+  padding: 20px;
+  transform: translateY(100%);
+  transition: 0.3s ease-in-out;
+}
+
+.post-title {
+  overflow: hidden;
+  margin: 20px 0;
+}
+
+.post-title:hover .post-hidden {
+  transform: translateY(0);
+}
+
+.bg {
+  width: 100%;
+  background: url(../public/images/bg-images/maxresdefault.jpg);
+  height: 800px;
+  background-size: cover;
+  margin: 60px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.bg-link {
+  text-transform: uppercase;
+  color: rgb(7, 6, 7);
+  font-size: 4rem;
+  border: 2px solid black;
+  cursor: pointer;
+  padding: 15px 30px;
+}
+
+.bg-link:hover {
+  box-shadow: inset black 0 0 12px 2px;
+}
