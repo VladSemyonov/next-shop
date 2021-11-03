@@ -6,7 +6,9 @@ export default function AdsField({ title, query }) {
   const [items, setItems] = useState([]);
 
   useEffect(() => {
-    fetch(`https://teemo.vercel.app/api/content/${query}`)
+    fetch(
+      `https://https://teemo-c8m3utfix-vladsemyonov.vercel.app/api/content/${query}`
+    )
       //fetch(`http://localhost:3000/api/content/${query}`)
       .then((result) => result.json())
       .then((result) => setItems(result));
