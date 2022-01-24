@@ -54,7 +54,7 @@ export default function Bascket() {
     const errors = validate(sendData);
     setErrors(errors);
     if (Object.keys(errors).length === 0) {
-      fetch("http://vladreact.me/server/order", {
+      fetch("http://vladreact.me/api/order", {
         method: "POST",
         headers: new Headers({
           Accept: "application/json",

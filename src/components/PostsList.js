@@ -5,7 +5,7 @@ export default function PostsList() {
   const [items, setItems] = useState([]);
 
   useEffect(() => {
-    fetch(`http://localhost:3000/api/mostClicked`)
+    fetch(`http://vladreact.me/api/mostClicked`)
       .then((result) => result.json())
       .then((result) => setItems(result));
   }, []);

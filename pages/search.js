@@ -24,9 +24,9 @@ export default function Search({ items }) {
 }
 
 export const getServerSideProps = async (context) => {
-  let res2 = await fetch(
-    `http://localhost:3000/api/search/${context.query.selector}`
-  );
+  const uri = `http://127.0.0.1:3013/api/search/${context.query.selector}`;
+  const encoded = encodeURI(uri);
+  let res2 = await fetch(encoded);
   let items = await res2.json();
 
   return {

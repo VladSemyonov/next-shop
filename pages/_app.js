@@ -10,16 +10,16 @@ import AlertToBasket from "../src/components/AlertToBasket";
 function MyApp({ Component, pageProps }) {
   const [bascket, setBascket] = useState([]);
   const [summaryPrice, setSummaryPrice] = useState(0);
+  const [categories, setCategoies] = useState({});
   const [showAlert, setShowAlert] = useState({ opacity: 0, text: "" });
 
   useEffect(() => {
-    if (localStorage.filmsToken) {
-      setUser({
-        role: jwtDecode(localStorage.filmsToken).user.role,
-        token: localStorage.filmsToken,
-      });
-      setAuthorizationHeader(localStorage.filmsToken);
+    async function fetchData() {
+      let res = await fetch("http://localhost:3000/api/categories");
+      let categories = await res.json();
+      setCategoies(categories);
     }
+    fetchData();
   }, []);
 
   useMemo(() => {
@@ -78,6 +78,7 @@ function MyApp({ Component, pageProps }) {
         removeBasket: removeBasket,
         summaryPrice: summaryPrice,
         alert: setAlert,
+        categories: categories,
       }}
     >
       <AlertToBasket trigger={showAlert} />

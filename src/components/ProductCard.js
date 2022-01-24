@@ -36,13 +36,22 @@ export default function ProductCard({ item, size }) {
   }, [size]);
 
   return (
-    <div className={`col-lg-${sizes.col} col-sm-6`}>
+    <div
+      className={`col-lg-${sizes.col} col-sm-6`}
+      style={{ backgroundColor: "white" }}
+    >
       <div className="product-card">
         <div className="product-grid-content">
           <div className="product-header">
-            <span style={{ height: "80px" }}>
+            <span
+              style={{
+                height: "80px",
+              }}
+            >
               <Link
-                style={{ fontSize: size === "small" ? ".8rem" : "1rem" }}
+                style={{
+                  height: "inherit",
+                }}
                 href={{
                   pathname: "/product/[id]",
                   query: { id: item._attributes.id },

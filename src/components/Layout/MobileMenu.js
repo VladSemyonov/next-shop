@@ -1,20 +1,69 @@
 import Link from "next/link";
+import { useEffect, useState, useContext } from "react";
+import { AppContext } from "../../../pages/_app";
 
 export default function MobileMenu() {
+  const [showMenu, setShowMenu] = useState("none");
+  const { bascket, categories } = useContext(AppContext);
+  const [navbarTop, setNavbarTop] = useState(0);
+  const [showChild, setShowChild] = useState("");
+
+  useEffect(() => {
+    if (showMenu === "flex") {
+      window.addEventListener("click", setMenu);
+      return () => window.removeEventListener("click", setMenu);
+    }
+  }, [showMenu]);
+
+  function setMenu() {
+    showMenu === "flex" ? setShowMenu("none") : setShowMenu("flex");
+  }
+
+  function burgerMenuDom(obj) {
+    let result = [];
+    for (let category in obj) {
+      result.push(
+        <div className="card" key={category}>
+          <span onClick={() => setShowChild(category)}>{category}</span>
+          <div style={{ display: showChild === category ? "block" : "none" }}>
+            <div className="card-body">{childMenu(categories[category])}</div>
+          </div>
+        </div>
+      );
+    }
+    return result;
+  }
+
+  function childMenu(obj) {
+    let result = obj.map(({ _text, _attributes }) => (
+      <Link key={_text} href={_text}>
+        {_text}
+      </Link>
+    ));
+    return result;
+  }
+
   return (
     <div className="site-mobile-menu">
       <header className="mobile-header d-block d-lg-none pt--10 pb-md--10">
-        <div className="container">
-          <div className="row align-items-sm-end align-items-center">
-            <div className="col-md-4 col-7"></div>
+        <div className="container position-relative">
+          <div className="row align-items-center">
+            <div className="col-3 d-flex justify-content-center">
+              <Link href="/">
+                <span className="my-logo">Teemo</span>
+              </Link>
+            </div>
             <div className="col-md-5 order-3 order-md-2">
               <nav className="category-nav">
                 <div>
-                  <a href="#" className="category-trigger">
+                  <span
+                    className="category-trigger"
+                    style={{ cursor: "pointer" }}
+                    onClick={setMenu}
+                  >
                     <i className="fa fa-bars" />
-                    Выбрать категорию
-                  </a>
-                  <ul className="category-menu"></ul>
+                    Выбрать категории
+                  </span>
                 </div>
               </nav>
             </div>
@@ -23,20 +72,34 @@ export default function MobileMenu() {
                 <ul className="header-links">
                   <li className="sin-link">
                     <Link href="/" className="cart-link link-icon" passHref>
-                      <i className="ion-bag"></i>
+                      <div>
+                        <i className="ion-bag"></i>
+                        {bascket.length > 0 && (
+                          <span className="text-number">{bascket.length}</span>
+                        )}
+                      </div>
                     </Link>
                   </li>
                   <li className="sin-link">
-                    <a
-                      href="#"
+                    <span
+                      onClick={setMenu}
                       className="link-icon hamburgur-icon off-canvas-btn"
                     >
                       <i className="ion-navicon" />
-                    </a>
+                    </span>
                   </li>
                 </ul>
               </div>
             </div>
+          </div>
+          <div
+            id="accordion"
+            style={{
+              border: "1px solid lightgrey",
+              margin: 0,
+            }}
+          >
+            {burgerMenuDom(categories)}
           </div>
         </div>
       </header>

@@ -12,23 +12,35 @@ export default function Products({ items }) {
   };
 
   useEffect(() => {
-    sortValue === "down" &&
-      setSortedItems(
-        items.sort((a, b) =>
-          Number(a.price._text) - Number(b.price._text) > 0 ? 1 : -1
-        )
-      );
-    sortValue === "up" &&
-      setSortedItems(
-        items.sort((a, b) =>
-          Number(a.price._text) - Number(b.price._text) > 0 ? -1 : 1
-        )
-      );
+    sortItems(sortValue);
   }, [sortValue, items]);
 
+  function sortItems(fil) {
+    switch (fil) {
+      case "up":
+        setSortedItems(
+          items.sort((a, b) =>
+            Number(a.price._text) - Number(b.price._text) > 0 ? 1 : -1
+          )
+        );
+        return;
+      case "down":
+        setSortedItems(
+          items.sort((a, b) =>
+            Number(a.price._text) - Number(b.price._text) > 0 ? -1 : 1
+          )
+        );
+        return;
+    }
+  }
+  console.log(sortValue, sortedItems);
   return (
     <>
-      <ToolBar util={setColumnsSize} sortType={changeSortValue} />
+      <ToolBar
+        util={setColumnsSize}
+        sortType={changeSortValue}
+        value={sortValue}
+      />
       {sortedItems.map((i, index) => (
         <ProductCard item={i} size={columnsSize} key={index} />
       ))}

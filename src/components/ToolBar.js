@@ -1,4 +1,4 @@
-export default function ToolBar({ util, sortType }) {
+export default function ToolBar({ util, sortType, sortValue }) {
   function setActive(e, s) {
     util(s);
     const elements = document.getElementsByClassName("sorting-btn");
@@ -56,10 +56,12 @@ export default function ToolBar({ util, sortType }) {
               id="select"
               className="form-control nice-select sort-select mr-0"
             >
-              <option value="up" selected="selected">
-                По возрастанию ценны
+              <option value="down" selected={sortValue === "down"}>
+                По уменьшению цены
               </option>
-              <option value="down">По уменьшении ценны</option>
+              <option value="up" selected={sortValue === "up"}>
+                По возрастанию цены
+              </option>
             </select>
           </div>
         </div>

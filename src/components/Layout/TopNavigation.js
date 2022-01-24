@@ -8,19 +8,13 @@ import MobileMenu from "./MobileMenu";
 const TopNavigation = () => {
   const [showMenu, setShowMenu] = useState("none");
   const [searchValue, setSearchValue] = useState("");
-  const { summaryPrice, bascket, deleteFromBascket } = useContext(AppContext);
+  const { summaryPrice, bascket, deleteFromBascket, categories } =
+    useContext(AppContext);
   const [navbarTop, setNavbarTop] = useState(0);
-  const [categories, setCategoies] = useState({});
   const [showChild, setShowChild] = useState("");
   const router = useRouter();
 
   useEffect(() => {
-    async function fetchData() {
-      let res = await fetch("http://localhost:3000/api/categories");
-      let categories = await res.json();
-      setCategoies(categories);
-    }
-    fetchData();
     let prevScrollpos = window.pageYOffset;
     window.onscroll = () => {
       const currentScrollPos = window.pageYOffset;
@@ -66,9 +60,9 @@ const TopNavigation = () => {
     for (let category in obj) {
       if (obj[category].length > 0) {
         let burger = [];
-        obj[category].map((subCategory) =>
+        obj[category].map((subCategory, index) =>
           burger.push(
-            <div className="child-item">
+            <div className="child-item" key={subCategory._text}>
               <Link
                 className={`child-item-link`}
                 href={`/category/${subCategory._attributes.id}`}

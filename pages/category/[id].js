@@ -174,10 +174,14 @@ export default function Category({ data, items }) {
 }
 
 export const getServerSideProps = async (context) => {
+  //let res = await fetch(`http://127.0.0.1:3013/api/test/${context.query.id}`);
   let res = await fetch(`http://localhost:3000/api/test/${context.query.id}`);
   let filtersRes = await res.json();
   let data = await Object.assign(initObj, filtersRes);
 
+  // let res2 = await fetch(
+  //   `http://127.0.0.1:3013/api/category/${context.query.id}`
+  // );
   let res2 = await fetch(
     `http://localhost:3000/api/category/${context.query.id}`
   );
